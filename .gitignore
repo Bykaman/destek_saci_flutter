@@ -1,24 +1,25 @@
+﻿# Flutter
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.dart_tool/
+.pub-cache/
+.pub/
+/build/
+
 # Android
 /android/key.properties
 /android/local.properties
 /android/gradle.properties
+/android/.gradle/
+/android/app/build/
 
 # iOS
-/ios/Flutter/flutter_export_environment.sh
-/ios/Flutter/Generated.xcconfig
-/ios/Flutter/App.framework/
-/ios/Flutter/Flutter.framework/
+/ios/Pods/
 /ios/Flutter/Flutter.podspec
-/ios/ServiceDefinitions.json
-
-# Flutter
-.flutter-plugins
-.flutter-plugins-dependencies
-.packages
-.pub-cache/
-.pub/
-/build/
-/dart_tool/
+/ios/Runner.xcworkspace/
+/ios/Runner.xcodeproj/project.xcworkspace/
+/ios/Runner.xcodeproj/xcuserdata/
 
 # IDE
 .idea/
@@ -30,15 +31,6 @@
 # OS
 .DS_Store
 Thumbs.db
-
-# Build
-/android/app/build/
-/ios/Pods/
-/ios/.symlinks/
-/ios/Podfile.lock
-/ios/Runner.xcworkspace/
-/ios/Runner.xcodeproj/project.xcworkspace/
-/ios/Runner.xcodeproj/xcuserdata/
 
 # Debug
 *.log
