@@ -1,4 +1,4 @@
-package com.example.destek_saci
+package com.muhammetkaman.destek_saci
 
 import io.flutter.embedding.android.FlutterActivity
 

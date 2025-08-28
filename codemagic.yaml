@@ -1,0 +1,36 @@
+﻿workflows:
+  android-workflow:
+    name: Android Build
+    environment:
+      flutter: stable
+    scripts:
+      - flutter pub get
+      - flutter build apk --release
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/*.aab
+
+  ios-workflow:
+    name: iOS Build
+    environment:
+      flutter: stable
+      xcode: latest
+    scripts:
+      - flutter pub get
+      - flutter build ipa --export-options-plist=ios/ExportOptions.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+workflows:
+  ios-workflow:
+    name: iOS Production Build
+    environment:
+      flutter: stable
+      xcode: latest  # Xcode 15+ kullanılacak
+    scripts:
+      - flutter pub get
+      - cd ios && pod install --repo-update && cd ..
+      - flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_API_KEY
+        submit_to_testflight: true

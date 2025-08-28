@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'u_profil_sayfasi.dart';
 import 'c_profil_sayfasi.dart';
 import 'g_profil_sayfasi.dart';
 import 'acik_kutu_sayfasi.dart';
 import 'hakkinda_sayfasi.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -24,27 +24,47 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AnaEkran extends StatelessWidget {
+class AnaEkran extends StatefulWidget {
   const AnaEkran({super.key});
+
+  @override
+  State<AnaEkran> createState() => _AnaEkranState();
+}
+
+class _AnaEkranState extends State<AnaEkran> {
+  String _version = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = "${info.version}+${info.buildNumber}";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-  title: const Text("PVC DESTEK SACI HESAPLAMA"),
-  centerTitle: true,
-  actions: [
-    IconButton(
-      icon: Icon(Icons.info_outline),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HakkindaSayfasi()),
-        );
-      },
-    )
-  ],
-),
+        title: const Text("PVC DESTEK SACI HESAPLAMA"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HakkindaSayfasi()),
+              );
+            },
+          ),
+        ],
+      ),
       backgroundColor: const Color(0xFFF5EFF9),
       body: SafeArea(
         child: Column(
@@ -89,35 +109,38 @@ class AnaEkran extends StatelessWidget {
                       context,
                       'assets/icons/u_profil.png',
                       'U PROFİL',
-                      () => UProfilSayfasi(),
+                      () => const UProfilSayfasi(),
                     ),
                     _buildCard(
                       context,
                       'assets/icons/c_profil.png',
                       'C PROFİL',
-                      () => CProfilSayfasi(),
+                      () => const CProfilSayfasi(),
                     ),
                     _buildCard(
                       context,
                       'assets/icons/g_profil.png',
                       'G PROFİL',
-                      () => GProfilSayfasi(),
+                      () => const GProfilSayfasi(),
                     ),
                     _buildCard(
                       context,
                       'assets/icons/acik_kutu.png',
                       'AÇIK KUTU\nPROFİL',
-                      () => AcikKutuSayfasi(),
+                      () => const AcikKutuSayfasi(),
                     ),
                   ],
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 12),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
               child: Text(
-                'v0.1  TÜM HAKLARI SAKLIDIR.',
-                style: TextStyle(fontSize: 12, color: Colors.black54),
+                _version.isNotEmpty
+                    ? "Sürüm: $_version — Tüm hakları saklıdır."
+                    : "Sürüm bilgisi yükleniyor...",
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
+                textAlign: TextAlign.center,
               ),
             ),
           ],
@@ -126,9 +149,17 @@ class AnaEkran extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(BuildContext context, String img, String title, Widget Function() page) {
+  Widget _buildCard(
+    BuildContext context,
+    String img,
+    String title,
+    Widget Function() page,
+  ) {
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => page())),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => page()),
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,

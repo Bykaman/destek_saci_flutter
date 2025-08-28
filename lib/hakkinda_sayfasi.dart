@@ -1,44 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-class HakkindaSayfasi extends StatelessWidget {
+class HakkindaSayfasi extends StatefulWidget {
+  const HakkindaSayfasi({super.key});
+
+  @override
+  State<HakkindaSayfasi> createState() => _HakkindaSayfasiState();
+}
+
+class _HakkindaSayfasiState extends State<HakkindaSayfasi> {
+  String _version = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _getVersion();
+  }
+
+  Future<void> _getVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = "${info.version}+${info.buildNumber}";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hakkında'),
+        title: const Text("Hakkında"),
         centerTitle: true,
+        backgroundColor: Colors.blue.shade700,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'PVC Destek Sacı Hesaplama',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
             ),
-            SizedBox(height: 16),
-            Text(
-              'Bu uygulama, PVC pencere sistemlerinde kullanılan destek sacı profillerinin 1 mtül ağırlık ve fiyat hesaplamasını yapar.',
+            const SizedBox(height: 12),
+            const Text(
+              'Bu uygulama, galvanizli yassı çelik sacından üretilen PVC destek sacı profilleri '
+              '(U, C, G ve Açık Kutu) için yaklaşık ağırlık, birim fiyat ve toplam maliyet '
+              'hesaplamalarını pratik biçimde yapmanıza yardımcı olmak amacıyla hazırlanmıştır.',
+              textAlign: TextAlign.justify,
+              style: TextStyle(color: Colors.black),
             ),
-            SizedBox(height: 16),
-            Text(
-              'Kullanım:',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            const SizedBox(height: 16),
+
+            // Başlık: Önemli Uyarılar (sadece baş harfler büyük), sade siyah
+            const Text(
+              'Önemli Uyarılar',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
-            Text('• Profil tipini seçin\n• Ölçüleri ve birim fiyatı girin\n• HESAPLA butonuna basın'),
-            SizedBox(height: 16),
-            Text(
-              'Sürüm: v0.1',
-              style: TextStyle(color: Colors.grey),
+            const SizedBox(height: 8),
+
+            // Uyarı metni: sade siyah
+            const Text(
+              'Hesaplama sonuçları yalnızca bilgilendirme amaçlıdır. '
+              'Çıkan sonuçların doğruluğunu kullanıcıların mutlaka kendilerinin kontrol etmesi gerekmektedir. '
+              'Hesaplama sonuçlarından doğabilecek her türlü risk ve zarardan kullanıcı sorumludur. '
+              'Uygulama sahibi hiçbir şekilde sorumluluk kabul etmez.',
+              textAlign: TextAlign.justify,
+              style: TextStyle(color: Colors.black),
             ),
-            Spacer(),
+
+            const SizedBox(height: 30),
             Center(
               child: Text(
-                'Tüm hakları saklıdır.',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
+                _version.isNotEmpty
+                    ? "Sürüm: $_version — Tüm hakları saklıdır."
+                    : "Sürüm bilgisi yükleniyor...",
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
               ),
-            )
+            ),
           ],
         ),
       ),
